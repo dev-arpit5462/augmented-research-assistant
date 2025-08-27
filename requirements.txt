@@ -1,36 +1,36 @@
 # Core Streamlit and UI
-streamlit>=1.28.0
-streamlit-chat>=0.1.1
+streamlit
+streamlit-chat
 
 # LangChain ecosystem
-langchain>=0.1.0
-langchain-chroma>=0.1.0
-langchain-google-genai>=1.0.0
-langchain-core>=0.1.0
+langchain
+langchain-chroma
+langchain-google-genai
+langchain-core
 
 # LlamaIndex ecosystem
-llama-index>=0.9.0
-llama-index-readers-file>=0.1.0
-llama-index-core>=0.9.0
+llama-index
+llama-index-readers-file
+llama-index-core
 
 # Vector Database
-chromadb>=0.4.0
-pysqlite3
+chromadb
+
 
 # Google AI
-google-generativeai>=0.3.0
+google-generativeai
 
 # Document Processing
-PyPDF2>=3.0.0
-python-docx>=0.8.11
-markdown>=3.5.0
+PyPDF2
+python-docx
+markdown
 
 # Core dependencies
-numpy>=1.24.0
-pandas>=2.0.0
-tiktoken>=0.5.0
+numpy
+pandas
+tiktoken
 
 # Utilities
-python-dotenv>=1.0.0
-pathlib>=1.0.0
-typing-extensions>=4.8.0
+python-dotenv
+pathlib
+typing-extensions
