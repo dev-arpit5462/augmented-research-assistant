@@ -1,38 +1,29 @@
 """SQLite compatibility fix for Streamlit Cloud deployment."""
 
 import sys
-import sqlite3
+import os
 
 def fix_sqlite():
     """Fix SQLite version compatibility for ChromaDB."""
     try:
-        # Check current SQLite version
-        current_version = sqlite3.sqlite_version
-        print(f"Current SQLite version: {current_version}")
+        # Force pysqlite3 import before any other SQLite usage
+        import pysqlite3.dbapi2 as sqlite3_new
         
-        # ChromaDB requires SQLite >= 3.35.0
-        required_version = "3.35.0"
+        # Replace all sqlite3 references
+        sys.modules['sqlite3'] = sqlite3_new
+        sys.modules['sqlite3.dbapi2'] = sqlite3_new
         
-        if current_version < required_version:
-            print(f"SQLite version {current_version} is below required {required_version}")
-            
-            # Try to use pysqlite3-binary if available
-            try:
-                import pysqlite3.dbapi2 as sqlite3_new
-                # Monkey patch sqlite3
-                sys.modules['sqlite3'] = sqlite3_new
-                print("Successfully patched SQLite with pysqlite3-binary")
-                return True
-            except ImportError:
-                print("pysqlite3-binary not available")
-                return False
-        else:
-            print(f"SQLite version {current_version} is compatible")
-            return True
-            
+        print(f"✅ SQLite upgraded to version: {sqlite3_new.sqlite_version}")
+        return True
+        
+    except ImportError:
+        print("⚠️ pysqlite3 not available, using system SQLite")
+        import sqlite3
+        print(f"System SQLite version: {sqlite3.sqlite_version}")
+        return False
     except Exception as e:
-        print(f"Error checking SQLite version: {e}")
+        print(f"❌ Error fixing SQLite: {e}")
         return False
 
-if __name__ == "__main__":
-    fix_sqlite()
+# Auto-execute on import
+fix_sqlite()

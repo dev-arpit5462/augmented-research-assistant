@@ -15,7 +15,7 @@ llama-index-core>=0.9.0
 
 # Vector Database
 chromadb>=0.4.0
-pysqlite3; platform_system != "Windows"
+pysqlite3
 
 # Google AI
 google-generativeai>=0.3.0

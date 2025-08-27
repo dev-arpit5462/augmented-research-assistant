@@ -3,18 +3,22 @@
 A modern, dark-themed RAG application with LangChain + LlamaIndex + Gemini API
 """
 
-# Fix SQLite compatibility for ChromaDB on Streamlit Cloud
+# CRITICAL: Fix SQLite before ANY other imports
 import sys
 import os
 
-# Only apply SQLite fix on Streamlit Cloud (not locally)
-if os.getenv('STREAMLIT_CLOUD') or 'streamlit.io' in os.getenv('HOSTNAME', ''):
+# Must happen before chromadb is imported anywhere
+def patch_sqlite():
     try:
-        __import__('pysqlite3')
-        import pysqlite3.dbapi2 as sqlite3
-        sys.modules['sqlite3'] = sqlite3
+        import pysqlite3.dbapi2 as sqlite3_new
+        sys.modules['sqlite3'] = sqlite3_new
+        sys.modules['sqlite3.dbapi2'] = sqlite3_new
+        print(f"✅ SQLite patched to version: {sqlite3_new.sqlite_version}")
     except ImportError:
-        pass
+        import sqlite3
+        print(f"⚠️ Using system SQLite version: {sqlite3.sqlite_version}")
+
+patch_sqlite()
 
 import streamlit as st
 import os
