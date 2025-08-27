@@ -67,25 +67,17 @@ class VectorStoreService:
             from chromadb.config import Settings
             
             # Create isolated client with session-specific settings
-            # Streamlit Cloud compatibility fixes
             client_settings = Settings(
                 persist_directory=persist_directory,
                 anonymized_telemetry=False,
-                allow_reset=True,
-                is_persistent=True
+                allow_reset=True
             )
             
             # Create a new client instance for this session
-            # Handle Streamlit Cloud deployment environment
-            try:
-                chroma_client = chromadb.PersistentClient(
-                    path=persist_directory,
-                    settings=client_settings
-                )
-            except Exception as e:
-                # Fallback for deployment environments
-                print(f"PersistentClient failed, using HttpClient: {e}")
-                chroma_client = chromadb.Client(client_settings)
+            chroma_client = chromadb.PersistentClient(
+                path=persist_directory,
+                settings=client_settings
+            )
             
             # Initialize Chroma with the isolated client
             self.vector_store = Chroma(
