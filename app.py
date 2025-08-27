@@ -1,7 +1,20 @@
 """
-🔍 Augmented Research Assistant - Streamlit RAG App
+🔍 Augmented Research Assistant - Streamlit Application
 A modern, dark-themed RAG application with LangChain + LlamaIndex + Gemini API
 """
+
+# Fix SQLite compatibility for ChromaDB on Streamlit Cloud
+import sys
+import os
+
+# Only apply SQLite fix on Streamlit Cloud (not locally)
+if os.getenv('STREAMLIT_CLOUD') or 'streamlit.io' in os.getenv('HOSTNAME', ''):
+    try:
+        __import__('pysqlite3')
+        import pysqlite3.dbapi2 as sqlite3
+        sys.modules['sqlite3'] = sqlite3
+    except ImportError:
+        pass
 
 import streamlit as st
 import os
